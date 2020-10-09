@@ -1,0 +1,57 @@
+Is required to reate an application where is displayed a list of users.
+
+In the user list, you should display ONLY  name, age and emal.
+
+when you clic in the user, a modal or drawer should appear and display the est of the
+information in an editable way where you can change the values and save the changes.
+
+For every user tha you create, you will generate a gravatar or random pciture.
+
+
+The list of users will be working only in memory or local storage; you don´t need a 
+database or back end.
+
+
+What should do?
+
+
+	-List all users
+	-Create user (using a button)
+	-create random user (all the data will be filled randomly)
+	-delete user(using button)
+	-delete all user.
+
+
+
+User fields 
+	-name(string) 
+	-age(int)
+	-relocation(boolean)
+	-phone(int)
+	-Email(string)
+
+
+Validations 
+
+	- when create a new user, don´t allow empty fields
+	-must validate that the name field is composed by 4 words. Eeach word must be between 3 
+	 and 5 characters
+		-1st word cannot have "a, o, u, m, p".
+		-2nd word can oly have thes letters "asdfghjklopuytem".
+		-3er word cannot have "a,e,o,u" and should include at least 1 number.
+		-4th word should have at least 1 letter "t" lowercase
+	- age input mus be between 18 to 45 . only numbers, only int.
+	- Relocation by default always is true, but must have a way to change it to fales.
+		- if age >25 && age <30 relocation should be false.
+	- phone number should be save it as int, but when is displayed, should be displayed with
+	  phone format, example +1 (799) 99 89 56.
+	- Email must have a valid format:
+		- Before "@", between 4 to 20 chars and should let me include ".", "-","_","+".
+		- After "@" and before "."(com, net, mx) between 5 to 10 , DONT ALLOW ".",
+		- After "." between 2 and 3 characters,don´t allow ".","-","+".
+
+if you have any concern or comment, please contact me,
+
+yo will have 48hrs after confirm as recived this email. If you need more days please 
+send us an email.
+

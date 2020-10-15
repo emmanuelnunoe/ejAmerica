@@ -6,7 +6,7 @@ console.log("JS is working");
 // CRUD for user management 
 
 // USER  CONTROLLER
-var userCtrl = (function(){
+var userController = (function(){
 
     var User = function(name, age, relocation,phone, email){
         this.name = name;
@@ -157,7 +157,9 @@ var userCtrl = (function(){
             return data; // TODO: return only specific information
         },
         clearData:function(){
-            return data.users=[]
+            data.users=[]
+            return console.log("All data was cleared succesfully "+ data);
+
         },
         // test for module
         publicTest : function(){
@@ -172,7 +174,7 @@ var userCtrl = (function(){
 
 
 // UICONTROLLER
-var UICtrl = (function(){
+var UIController = (function(){
 
     var DOMstrings ={
     inputWord1 :'.input__word1',
@@ -182,7 +184,7 @@ var UICtrl = (function(){
     inputAge :'.input__age',
     inputPhone :'.input__phone',
     inputEmail :'.input__email',
-    inputBtn :'.saveButton'
+    inputSaveButton :'.save__button'
     }
 
     var nodeListForEach = function(list, callback) {
@@ -199,9 +201,9 @@ var UICtrl = (function(){
                 word2 : document.querySelector(DOMstrings.inputWord2).value,
                 word3 : document.querySelector(DOMstrings.inputWord3).value,
                 word4 : document.querySelector(DOMstrings.inputWord4).value,
-                age : document.querySelector(DOMstrings.inputWord4).value,
-                phone : document.querySelector(DOMstrings.inputWord4).value,
-                email : document.querySelector(DOMstrings.inputWord4).value
+                age : document.querySelector(DOMstrings.inputAge).value,
+                phone : document.querySelector(DOMstrings.inputPhone).value,
+                email : document.querySelector(DOMstrings.inputEmail).value
             };
 
         },
@@ -229,39 +231,39 @@ var UICtrl = (function(){
 var controller = (function(userCtrl, UICtrl)
 {
     
+
     var ctrlAddUser = function(){
         var input, newUser;
       // 1. Get the fields input data
         input = UICtrl.getInput();
-        console.log("input:"+ input)
-        /*if (true){
+        console.log("It works");
+        if(true){
 
         // 2. Add the item to the user controller
-       newUser = userCtrl.addNewUser("input",input.word1+" "+input.word2+" "+input.word3,
+        newUser = userCtrl.addNewUser("input",input.word1+" "+input.word2+" "+input.word3,
         input.age,true,input.phone,input.email )
-        
         // 3. Add the item to the UI
-        UICtrl.addListItem(newUser);
+        //UICtrl.addListItem(newUser);
 
         // 4. Clear the fields
-        UICtrl.clearFields();
+        //UICtrl.clearFields();
 
         // 5. update user list
-         updateUsersList();
+       //  updateUsersList();
                 
 
-        }*/
+        }
 
 
     }
 
-    document.querySelector('.save__button').addEventListener('click',ctrlAddUser);
-
-
-
+    var displayUsers = function(){
+            return console.log(userCtrl.getData())
+    }
     var setupEventListeners = function(){
         var DOM = UICtrl.getDOMstrings();
-        document.querySelector(DOM.inputBtn).addEventListener('click',ctrlAddUser)
+        document.querySelector(DOM.inputSaveButton).addEventListener('click',ctrlAddUser)
+        document.querySelector(".display__button").addEventListener('click',displayUsers)
     }
 
     var updateUsersList = function(){
@@ -273,12 +275,14 @@ var controller = (function(userCtrl, UICtrl)
     return{
 
         init: function(){
+            setupEventListeners()
             console.log("Aplication has started");
             userCtrl.getData();
+
             
         }
     }
 
-})(userCtrl,UICtrl);
+})(userController,UIController);
 
 controller.init();

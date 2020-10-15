@@ -15,8 +15,10 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#addModal">Add</button>
-                <button type="button" class="btn btn-light" href="#" onclick="userCtrl.addNewUser('random',null,null)">Random user</button> 
-                <button type="button" class="btn btn-light" href="#" onclick="userCtrl.clearData()">Delete all</button>
+                <button type="button" class="btn btn-light" href="#" onclick="userController.addNewUser('random',null,null)">Random user</button> 
+                <button type="button" class="btn btn-light" href="#" onclick="userController.clearData()">Delete all</button>
+                <button type="button" class="display__button btn btn-primary" >Display users</button>
+
 
 		</nav>
 		
@@ -79,7 +81,7 @@
               <div>
                <div class="input-group-prepend">
                         <span class="input-group-text">Age</span>
-                            <input type="number" id="input-phone" aria-label="Last name" class="form-control input__age >
+                            <input type="number" id="input-phone" aria-label="Last name" class="form-control input__age">
                         </div>
                 </div>
                 <div class="input-group-prepend">
@@ -95,7 +97,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary save__button" >Save changes</button>
+          <button type="button" class="btn btn-primary save__button">Save changes</button>
         </div>
       </div>
     </div>

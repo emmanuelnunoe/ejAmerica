@@ -173,8 +173,15 @@ var userCtrl = (function(){
 
 // UICONTROLLER
 var UICtrl = (function(){
+
     var DOMstrings ={
-    inputWord1 :'.word1',
+    inputWord1 :'.input__word1',
+    inputWord2 :'.input__word2',
+    inputWord3 :'.input__word3',
+    inputWord4 :'.input__word4',
+    inputAge :'.input__age',
+    inputPhone :'.input__phone',
+    inputEmail :'.input__email',
     inputBtn :'.saveButton'
     }
 
@@ -188,7 +195,13 @@ var UICtrl = (function(){
     return {
         getInput: function() {
             return{
-                word1 : document.querySelector(DOMstrings.word1).value
+                word1 : document.querySelector(DOMstrings.inputWord1).value,
+                word2 : document.querySelector(DOMstrings.inputWord2).value,
+                word3 : document.querySelector(DOMstrings.inputWord3).value,
+                word4 : document.querySelector(DOMstrings.inputWord4).value,
+                age : document.querySelector(DOMstrings.inputWord4).value,
+                phone : document.querySelector(DOMstrings.inputWord4).value,
+                email : document.querySelector(DOMstrings.inputWord4).value
             };
 
         },
@@ -215,26 +228,16 @@ var UICtrl = (function(){
 // MAIN APP
 var controller = (function(userCtrl, UICtrl)
 {
-    var setupEventListeners = function(){
-        var DOM = UICtrl.getDOMstrings();
-
-        document.querySelector(DOM.inputBtn).addEventListener('click',ctrlAddUser)
-    }
-
-    var updateUsersList = function(){
-        var user = userCtrl.getUsers()
-        UICtrl.displayList(users)
-    }
-
+    
     var ctrlAddUser = function(){
         var input, newUser;
-
-        // 1. Get the fields input data
-        input = UICtrl.getInput()
-        if (true){
+      // 1. Get the fields input data
+        input = UICtrl.getInput();
+        console.log("input:"+ input)
+        /*if (true){
 
         // 2. Add the item to the user controller
-        newUser = userCtrl.addNewUser("input",input.word1+" "+input.word2+" "+input.word3,
+       newUser = userCtrl.addNewUser("input",input.word1+" "+input.word2+" "+input.word3,
         input.age,true,input.phone,input.email )
         
         // 3. Add the item to the UI
@@ -245,12 +248,27 @@ var controller = (function(userCtrl, UICtrl)
 
         // 5. update user list
          updateUsersList();
+                
 
-
-        }
+        }*/
 
 
     }
+
+    document.querySelector('.save__button').addEventListener('click',ctrlAddUser);
+
+
+
+    var setupEventListeners = function(){
+        var DOM = UICtrl.getDOMstrings();
+        document.querySelector(DOM.inputBtn).addEventListener('click',ctrlAddUser)
+    }
+
+    var updateUsersList = function(){
+        var user = userCtrl.getUsers()
+        UICtrl.displayList(users)
+    }
+
 
     return{
 

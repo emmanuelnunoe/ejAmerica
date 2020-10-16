@@ -96,7 +96,6 @@ var userController = (function(){
                 word3 = randomWord(4,exception,true);
                 exception = '[t]'
                 word4 = randomWord(4,exception,false);
-                rndName = word1+" "+word2+" "+word3+" "+word4
             // generate random age.
                 rndAge = getRandomInt(18,46);
             // identify relocation.
@@ -107,7 +106,7 @@ var userController = (function(){
                 console.log(formatedPhone)
             // generate random email.
                 email = "myEmail@mail.com"
-            usr = new User(ID,rndName,rndAge,relocation, phone,email);
+            usr = new User(ID,word1,word2,word3,word4,rndAge,relocation, phone, email);
 
         return usr;
     }
@@ -159,7 +158,7 @@ var userController = (function(){
         },
         // get all data from users
         getData: function(){
-            return data; // TODO: return only specific information
+            return data.users; // TODO: return only specific information
         },
         clearData:function(){
             data.users=[]
@@ -243,9 +242,6 @@ var UIController = (function(){
             // insert html into the dom
             document.querySelector(element).insertAdjacentHTML('beforeend',newHtml) 
 
-        },
-        displayUsers: function(obj){
-            document.querySelector(DOMstrings.budgetLabel).textContent = obj.name;
         }
     }
 
@@ -279,7 +275,10 @@ var controller = (function(userCtrl, UICtrl)
     }
 
     ctrlRandomUser = function( obj){
+        var newUser,
+
         newUser = userCtrl.addNewUser("random")
+        console.log(newUser)
         UICtrl.addListItem(newUser)
 
     }

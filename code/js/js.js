@@ -1,5 +1,3 @@
-console.log("JS is working");
-
 // UABC | ejAmerica
 // 10-05-2020
 // Emmanuel Nuno Estrella
@@ -84,7 +82,7 @@ var userController = (function(){
 
     // random User
     var randomUser = function(ID){
-            var rndName, rndAge, relocation, 
+            var randomInt, rndAge, relocation, 
                 phone, email, usr,exception,
                 word1, word2, word3, word4
             // generate random name.
@@ -105,7 +103,19 @@ var userController = (function(){
                 formatedPhone =  phoneFormat(phone)
                 console.log(formatedPhone)
             // generate random email.
-                email = "myEmail@mail.com"
+                email=""
+                randomInt = getRandomInt(4,21)
+                exception = "[a-z]"
+                email = randomWord(randomInt,exception,false)
+                email += "@"
+                exception ="[^.]"
+                randomInt = getRandomInt(5,11)
+                email += randomWord(randomInt,exception,false)
+                email += "."
+                exception = "[^.-_+]"
+                randomInt = getRandomInt(2,4)
+                email += randomWord(randomInt,exception,false)
+
             usr = new User(ID,word1,word2,word3,word4,rndAge,relocation, phone, email);
 
         return usr;
@@ -219,10 +229,25 @@ var UIController = (function(){
         clearFields: function(){
             var fields, fieldsArr;
 
-            fields = document.querySelectorAll(DOMstrings.name + ', ' +
-             DOMstrings.age + ','+ DOMstrings.relocation+','+ 
-             DOMstrings.phoneString+','+ DOMstrings.email);
+            fields = document.querySelectorAll( DOMstrings.inputWord1 + ', '+ DOMstrings.inputWord2 + ', ' +
+             DOMstrings.inputWord3+ ', ' + DOMstrings.inputWord4 +', '+ 
+             DOMstrings.inputAge + ', '+  DOMstrings.inputPhone  +', '+
+             DOMstrings.inputEmail);
+              
+             fieldsArr = Array.prototype.slice.call(fields)
+
+             fieldsArr.forEach(function(current, index, array) {
+                 current.value=" "
+            
+            fieldsArr[0].focus()
+                 
+             });
         },
+        validPhone: function(){
+            var input = getInput()
+            retur ( !isNan(input.phone) && input.phone > 0 && input.validPhone != "")
+        },
+
         addListItem:function(obj){
             var html, newHtml, element
             //HTML With placeholder text
@@ -242,6 +267,9 @@ var UIController = (function(){
             // insert html into the dom
             document.querySelector(element).insertAdjacentHTML('beforeend',newHtml) 
 
+        },
+        validations: function(){
+         return validPhone();
         }
     }
 
@@ -259,17 +287,24 @@ var controller = (function(userCtrl, UICtrl)
         // 1. Get the fields input data
         input = UICtrl.getInput();
 
-        // 2. Add the item to the user controller
-        newUser = userCtrl.addNewUser("input",input.word1, input.word2, input.word3, input.word4,input.age,true,input.phone,input.email )
 
-        // 3. Add the item to the UI
-        UICtrl.addListItem(newUser);
+        if( UICtrl.validations ) {
 
-        // 4. Clear the fields
-        //UICtrl.clearFields();
+            // 2. Add the item to the user controller
+            newUser = userCtrl.addNewUser("input",input.word1, input.word2, input.word3, input.word4,input.age,true,input.phone,input.email )
 
-        // 5. update user list
-       //  updateUsersList();
+            // 3. Add the item to the UI
+            UICtrl.addListItem(newUser);
+
+            // 4. Clear the fields
+            UICtrl.clearFields();
+
+            // 5. update user list
+        //  updateUsersList();
+
+
+        }
+
                 
 
     }

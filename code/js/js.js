@@ -6,12 +6,9 @@
 // USER  CONTROLLER
 var userController = (function(){
 
-    var User = function(id, word1, word2, word3, word4, age, relocation,phone, email){
+    var User = function(id, name, age, relocation,phone, email){
         this.id = id
-        this.word1 = word1;
-        this.word2 = word2;
-        this.word3 = word3;
-        this.word4 = word4;
+        this.name = name;
         this.age = age;
         this.relocation = relocation;
         this.phone = phone;
@@ -41,11 +38,11 @@ var userController = (function(){
 
     // generate random word for name
     var randomWord = function(letters,except, plus){
-        var i,word,a,z,flag
+        var i,word,a,z
         a=97
         z=122
         i=0
-        word="s"
+        word=""
 
         var randChar = String.fromCharCode(randInt); 
         // setup exceptions
@@ -58,9 +55,9 @@ var userController = (function(){
         // convert int to char
         var randChar = String.fromCharCode(randInt); 
         // setup regular expresion
-        let regExpFirstWord= new RegExp(exeptions,flag)
+        let reEx= new RegExp(exeptions)
         // evaluate regular expresion
-        let result = regExpFirstWord.test(randChar)
+        let result = reEx.test(randChar)
         // word builder after passing exceptions/RegExp
             if( result )
              {
@@ -84,16 +81,18 @@ var userController = (function(){
     var randomUser = function(ID){
             var randomInt, rndAge, relocation, 
                 phone, email, usr,exception,
-                word1, word2, word3, word4
+                word1, word2, word3, word4, name
             // generate random name.
-                exception = '[^*aoump""]'
+                exception = '[^aoump]'
                 word1 = randomWord(4,exception,false);
-                exception = '[*asdfghjklopuytem]'
+                exception = '[asdfghjklopuytem]'
                 word2 = randomWord(4,exception,false);
-                exception = '[^*aeou""]'
+                exception = '[^aeou]'
                 word3 = randomWord(4,exception,true);
-                exception = '[t]'
-                word4 = randomWord(4,exception,false);
+                exception = '[a-z]'
+                word4 = randomWord(3,exception,false);
+                word4 +="t"
+                name = word1+" "+ word2+" "+ word3+" "+word4
             // generate random age.
                 rndAge = getRandomInt(18,46);
             // identify relocation.
@@ -116,7 +115,7 @@ var userController = (function(){
                 randomInt = getRandomInt(2,4)
                 email += randomWord(randomInt,exception,false)
 
-            usr = new User(ID,word1,word2,word3,word4,rndAge,relocation, phone, email);
+            usr = new User(ID,name,rndAge,relocation, phone, email);
 
         return usr;
     }
@@ -152,14 +151,14 @@ var userController = (function(){
 
     return {
         // add a new user tor data strutcture
-        addNewUser: function(type, word1, word2, word3, word4, age, relocation, phone, email){
+        addNewUser: function(type, name, age, relocation, phone, email){
             var newUser, ID
             ID =data.users.length
             console.log(ID)
             if(type === "random"){
                 newUser = randomUser(ID);
             }else if( type === "input"){
-                newUser = new User(ID,word1,word2,word3,word4,age,relocation,phone,email);
+                newUser = new User(ID,name,age,relocation,phone,email);
             }
 
             data.users.push(newUser);
@@ -191,33 +190,32 @@ var userController = (function(){
 var UIController = (function(){
 
     var DOMstrings ={
-    inputWord1 :'.input__word1',
-    inputWord2 :'.input__word2',
-    inputWord3 :'.input__word3',
-    inputWord4 :'.input__word4',
+    inputName :'.input__name',
     inputAge :'.input__age',
     inputPhone :'.input__phone',
     inputEmail :'.input__email',
     inputSaveButton :'.save__button',
     usersContainer:'.user__list',
-    randomUser: '.randomUser__button'
+    randomUser: '.randomUser__button',
+    clearButton: '.clear__button',
+    displayButton:'.display__button',
     }
+
 
     var nodeListForEach = function(list, callback) {
         for (var i = 0; i < list.length; i++) {
             callback(list[i], i);
         }
     };
-    
+
+
+
             
     return {
         getInput: function() {
             return{
-                word1 : document.querySelector(DOMstrings.inputWord1).value,
-                word2 : document.querySelector(DOMstrings.inputWord2).value,
-                word3 : document.querySelector(DOMstrings.inputWord3).value,
-                word4 : document.querySelector(DOMstrings.inputWord4).value,
-                age : document.querySelector(DOMstrings.inputAge).value,
+                name : document.querySelector(DOMstrings.inputName).value,
+                age   : document.querySelector(DOMstrings.inputAge).value,
                 phone : document.querySelector(DOMstrings.inputPhone).value,
                 email : document.querySelector(DOMstrings.inputEmail).value
             };
@@ -229,37 +227,49 @@ var UIController = (function(){
         clearFields: function(){
             var fields, fieldsArr;
 
-            fields = document.querySelectorAll( DOMstrings.inputWord1 + ', '+ DOMstrings.inputWord2 + ', ' +
-             DOMstrings.inputWord3+ ', ' + DOMstrings.inputWord4 +', '+ 
-             DOMstrings.inputAge + ', '+  DOMstrings.inputPhone  +', '+
-             DOMstrings.inputEmail);
-              
-             fieldsArr = Array.prototype.slice.call(fields)
+            fields = document.querySelectorAll( DOMstrings.inputName+', '+DOMstrings.inputAge + ', '+  DOMstrings.inputPhone  +', '+ DOMstrings.inputEmail);
+            fieldsArr = Array.prototype.slice.call(fields)
 
-             fieldsArr.forEach(function(current, index, array) {
-                 current.value=" "
+            fieldsArr.forEach(function(current, index, array) {
+                 current.value=""
             
             fieldsArr[0].focus()
                  
              });
         },
-        validPhone: function(){
-            var input = getInput()
-            retur ( !isNan(input.phone) && input.phone > 0 && input.validPhone != "")
+
+        validPhone:function(){
+
+
+        },
+
+        validName: function(){
+            return true
+
+        },
+
+        validEmail: function(){
+            let isVlid,input
+            input = this.getInput();
+
+
+        },
+        validAge:function(){ 
+            let input = this.getInput()
+            var result = /[1-4][0-9]^""/.test(input.age);
+            console.log("valid age result:"+result)
+            return result;
         },
 
         addListItem:function(obj){
             var html, newHtml, element
             //HTML With placeholder text
             element = DOMstrings.usersContainer
-            html = '<tr><th scope="row">%id%</th><td>%word1% %word2% %word3% %word4%</td><td>%phone%</td><td>%email%</td></tr>';
+            html = '<tr><th scope="row">%id%</th><td>%name%</td><td>%phone%</td><td>%email%</td></tr>';
             console.log("object phone:"+obj.phone)
             // replace the place holder text with actual data
             newHtml = html.replace('%id%',obj.id);
-            newHtml = newHtml.replace('%word1%',obj.word1);
-            newHtml = newHtml.replace('%word2%',obj.word2);
-            newHtml = newHtml.replace('%word3%',obj.word3);
-            newHtml = newHtml.replace('%word4%',obj.word4);
+            newHtml = newHtml.replace('%name%',obj.name);
             newHtml = newHtml.replace('%phone%',obj.phone);
             newHtml = newHtml.replace('%email%',obj.email);
 
@@ -268,8 +278,21 @@ var UIController = (function(){
             document.querySelector(element).insertAdjacentHTML('beforeend',newHtml) 
 
         },
+ 
         validations: function(){
-         return validPhone();
+            var validPhone, validName, validAge
+            // init values
+            validAge=false
+            validName=false
+            validAge= false
+
+         //   validPhone = this.validPhone();
+            validName = this.validName()
+            validAge = this.validAge();
+          //  console.log("valid age= " + validAge)
+            console.log("valid Name= " + validName)
+
+         return validPhone && validName && validAge;
         }
     }
 
@@ -288,10 +311,10 @@ var controller = (function(userCtrl, UICtrl)
         input = UICtrl.getInput();
 
 
-        if( UICtrl.validations ) {
+        if( UICtrl.validations() !== false ) {
 
             // 2. Add the item to the user controller
-            newUser = userCtrl.addNewUser("input",input.word1, input.word2, input.word3, input.word4,input.age,true,input.phone,input.email )
+            newUser = userCtrl.addNewUser("input",input.name, input.age,true,input.phone,input.email )
 
             // 3. Add the item to the UI
             UICtrl.addListItem(newUser);
@@ -300,12 +323,8 @@ var controller = (function(userCtrl, UICtrl)
             UICtrl.clearFields();
 
             // 5. update user list
-        //  updateUsersList();
-
-
-        }
-
-                
+            //  updateUsersList();
+        }       
 
     }
 
@@ -321,6 +340,11 @@ var controller = (function(userCtrl, UICtrl)
     var displayUsers = function(){
             return console.log(userCtrl.getData())
     }
+
+    var clearUsers = function(){
+        return userCtrl.clearData()
+    }
+
     var setupEventListeners = function(){
         var DOM = UICtrl.getDOMstrings();
         // random user button
@@ -328,7 +352,11 @@ var controller = (function(userCtrl, UICtrl)
         // save change from input user button
         document.querySelector(DOM.randomUser).addEventListener('click',ctrlRandomUser)
         // display users in the console
-        document.querySelector(".display__button").addEventListener('click',displayUsers)
+        document.querySelector(DOM.displayButton).addEventListener('click',displayUsers)
+        // delete all users
+        document.querySelector(DOM.clearButton).addEventListener('click',clearUsers)
+
+
     }
 
     var updateUsersList = function(){
